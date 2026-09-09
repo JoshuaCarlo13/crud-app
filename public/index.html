@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Items Management System</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f4f7fb;
+        color: #1f2937;
+        min-height: 100vh;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .header {
+        background: #1e3a8a;
+        color: white;
+        padding: 22px 40px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .header-content {
+        max-width: 1200px;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .brand-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+    }
+
+    .brand h1 {
+        font-size: 21px;
+        font-weight: 600;
+    }
+
+    .brand p {
+        font-size: 12px;
+        opacity: 0.8;
+        margin-top: 2px;
+    }
+
+    .system-status {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 13px;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        background: #4ade80;
+        border-radius: 50%;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .container {
+        max-width: 1200px;
+        margin: 35px auto;
+        padding: 0 20px;
+    }
+
+    .page-title {
+        margin-bottom: 25px;
+    }
+
+    .page-title h2 {
+        font-size: 28px;
+        font-weight: 650;
+        color: #111827;
+    }
+
+    .page-title p {
+        color: #6b7280;
+        margin-top: 6px;
+        font-size: 14px;
+    }
+
+    /* =========================
+       STAT CARD
+    ========================= */
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .stat-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .stat-info span {
+        display: block;
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 3px;
+    }
+
+    .stat-info strong {
+        font-size: 23px;
+        color: #111827;
+    }
+
+    /* =========================
+       CARD
+    ========================= */
+
+    .card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-header h3 {
+        font-size: 17px;
+        color: #111827;
+    }
+
+    .card-header p {
+        font-size: 12px;
+        color: #6b7280;
+        margin-top: 3px;
+    }
+
+    /* =========================
+       FORM
+    ========================= */
+
+    .form-body {
+        padding: 24px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 18px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .form-group.full {
+        grid-column: 1 / -1;
+    }
+
+    label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 11px 13px;
+        font-size: 14px;
+        font-family: inherit;
+        outline: none;
+        transition: 0.2s;
+        background: #fff;
+    }
+
+    input:focus,
+    textarea:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 90px;
+    }
+
+    .form-actions {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 8px;
+        padding: 10px 17px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .btn-primary {
+        background: #2563eb;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #1d4ed8;
+    }
+
+    .btn-secondary {
+        background: #f3f4f6;
+        color: #374151;
+    }
+
+    .btn-secondary:hover {
+        background: #e5e7eb;
+    }
+
+    .btn-danger {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .btn-danger:hover {
+        background: #fecaca;
+    }
+
+    .btn-edit {
+        background: #eff6ff;
+        color: #2563eb;
+    }
+
+    .btn-edit:hover {
+        background: #dbeafe;
+    }
+
+    /* =========================
+       TABLE
+    ========================= */
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #f8fafc;
+        color: #6b7280;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        font-weight: 600;
+        padding: 13px 18px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    td {
+        padding: 15px 18px;
+        border-bottom: 1px solid #f0f1f3;
+        font-size: 14px;
+        vertical-align: middle;
+    }
+
+    tbody tr:hover {
+        background: #f8fafc;
+    }
+
+    .id {
+        color: #6b7280;
+        font-weight: 600;
+    }
+
+    .item-name {
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .description {
+        color: #6b7280;
+        max-width: 350px;
+    }
+
+    .quantity {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 35px;
+        padding: 5px 9px;
+        border-radius: 20px;
+        background: #eff6ff;
+        color: #2563eb;
+        font-weight: 600;
+        font-size: 12px;
+    }
+
+    .actions {
+        display: flex;
+        gap: 7px;
+    }
+
+    .actions .btn {
+        padding: 7px 11px;
+        font-size: 12px;
+    }
+
+    /* =========================
+       EMPTY STATE
+    ========================= */
+
+    .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        color: #6b7280;
+    }
+
+    .empty-icon {
+        font-size: 35px;
+        margin-bottom: 10px;
+    }
+
+    .empty-state strong {
+        display: block;
+        color: #374151;
+        margin-bottom: 5px;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15,23,42,0.5);
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 1000;
+    }
+
+    .modal.active {
+        display: flex;
+    }
+
+    .modal-content {
+        width: 100%;
+        max-width: 500px;
+        background: white;
+        border-radius: 14px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        overflow: hidden;
+    }
+
+    .modal-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .modal-header h3 {
+        font-size: 18px;
+    }
+
+    .modal-body {
+        padding: 24px;
+    }
+
+    .modal-footer {
+        padding: 16px 24px;
+        background: #f8fafc;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    /* =========================
+       NOTIFICATION
+    ========================= */
+
+    .notification {
+        position: fixed;
+        top: 25px;
+        right: 25px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-left: 4px solid #2563eb;
+        padding: 14px 18px;
+        border-radius: 8px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        display: none;
+        z-index: 2000;
+        font-size: 13px;
+    }
+
+    .notification.show {
+        display: block;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 768px) {
+
+        .header {
+            padding: 18px 20px;
+        }
+
+        .system-status {
+            display: none;
+        }
+
+        .container {
+            margin-top: 25px;
+        }
+
+        .stats {
+            grid-template-columns: 1fr;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group.full {
+            grid-column: auto;
+        }
+
+        .page-title h2 {
+            font-size: 23px;
+        }
+
+        .card-header {
+            padding: 18px;
+        }
+
+        .form-body {
+            padding: 18px;
+        }
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+    <div class="header-content">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                📦
+            </div>
+
+            <div>
+                <h1>Items Management</h1>
+                <p>Inventory Management System</p>
+            </div>
+
+        </div>
+
+        <div class="system-status">
+            <span class="status-dot"></span>
+            System Online
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- MAIN -->
+
+<main class="container">
+
+    <div class="page-title">
+
+        <h2>Dashboard</h2>
+
+        <p>
+            Manage your inventory items and quantities.
+        </p>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                📦
+            </div>
+
+            <div class="stat-info">
+
+                <span>Total Items</span>
+
+                <strong id="totalItems">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                📊
+            </div>
+
+            <div class="stat-info">
+
+                <span>Total Quantity</span>
+
+                <strong id="totalQuantity">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ✓
+            </div>
+
+            <div class="stat-info">
+
+                <span>System Status</span>
+
+                <strong style="font-size:16px;">
+                    Operational
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ADD ITEM -->
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>Add New Item</h3>
+
+                <p>
+                    Enter the details of the item you want to add.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-body">
+
+            <form id="itemForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="name">
+                            Item Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="e.g. Wireless Keyboard"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="quantity">
+                            Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quantity"
+                            placeholder="0"
+                            min="0"
+                            value="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label for="description">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            placeholder="Enter item description..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        + Add Item
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ITEMS TABLE -->
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>Items List</h3>
+
+                <p>
+                    View and manage all inventory items.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Item Name</th>
+
+                        <th>Description</th>
+
+                        <th>Quantity</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="itemsTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- EDIT MODAL -->
+
+<div
+    class="modal"
+    id="editModal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h3>Edit Item</h3>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <form id="editForm">
+
+                <input
+                    type="hidden"
+                    id="editId"
+                >
+
+                <div class="form-group">
+
+                    <label for="editName">
+                        Item Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editName"
+                        required
+                    >
+
+                </div>
+
+                <br>
+
+                <div class="form-group">
+
+                    <label for="editDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="editDescription"
+                    ></textarea>
+
+                </div>
+
+                <br>
+
+                <div class="form-group">
+
+                    <label for="editQuantity">
+                        Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        id="editQuantity"
+                        min="0"
+                        required
+                    >
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                class="btn btn-secondary"
+                onclick="closeEditModal()"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="btn btn-primary"
+                onclick="updateItem()"
+            >
+                Save Changes
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- DELETE MODAL -->
+
+<div
+    class="modal"
+    id="deleteModal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h3>Delete Item</h3>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <p>
+                Are you sure you want to delete this item?
+            </p>
+
+            <p style="margin-top:8px;color:#6b7280;font-size:13px;">
+                This action cannot be undone.
+            </p>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                class="btn btn-secondary"
+                onclick="closeDeleteModal()"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="btn btn-danger"
+                onclick="confirmDelete()"
+            >
+                Delete Item
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- NOTIFICATION -->
+
+<div
+    class="notification"
+    id="notification"
+></div>
+
+
+<script>
+
+    const form =
+        document.getElementById("itemForm");
+
+    const itemsTable =
+        document.getElementById("itemsTable");
+
+    let deleteId = null;
+
+
+    // =========================
+    // READ
+    // =========================
+
+    async function loadItems() {
+
+        try {
+
+            const response =
+                await fetch("/api/items");
+
+            const items =
+                await response.json();
+
+            itemsTable.innerHTML = "";
+
+            let totalQuantity = 0;
+
+            items.forEach(item => {
+
+                totalQuantity += Number(item.quantity);
+
+                const row =
+                    document.createElement("tr");
+
+                row.innerHTML = `
+
+                    <td class="id">
+                        #${item.id}
+                    </td>
+
+                    <td class="item-name">
+                        ${escapeHTML(item.name)}
+                    </td>
+
+                    <td class="description">
+                        ${escapeHTML(item.description || "No description")}
+                    </td>
+
+                    <td>
+                        <span class="quantity">
+                            ${item.quantity}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <div class="actions">
+
+                            <button
+                                class="btn btn-edit"
+                                onclick="openEditModal(
+                                    ${item.id},
+                                    '${escapeQuotes(item.name)}',
+                                    '${escapeQuotes(item.description || "")}',
+                                    ${item.quantity}
+                                )"
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                class="btn btn-danger"
+                                onclick="openDeleteModal(${item.id})"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+                itemsTable.appendChild(row);
+
+            });
+
+
+            if (items.length === 0) {
+
+                itemsTable.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            class="empty-state"
+                        >
+
+                            <div class="empty-icon">
+                                📦
+                            </div>
+
+                            <strong>
+                                No items found
+                            </strong>
+
+                            Add your first item using the form above.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+
+
+            document.getElementById("totalItems")
+                .textContent = items.length;
+
+            document.getElementById("totalQuantity")
+                .textContent = totalQuantity;
+
+
+        } catch (error) {
+
+            showNotification(
+                "Unable to load items.",
+                true
+            );
+
+            console.error(error);
+
+        }
+
+    }
+
+
+    // =========================
+    // CREATE
+    // =========================
+
+    form.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+            const name =
+                document.getElementById("name").value;
+
+            const description =
+                document.getElementById("description").value;
+
+            const quantity =
+                document.getElementById("quantity").value;
+
+
+            try {
+
+                const response =
+                    await fetch("/api/items", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            name,
+
+                            description,
+
+                            quantity:
+                                Number(quantity)
+
+                        })
+
+                    });
+
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Failed to add item"
+                    );
+                }
+
+
+                form.reset();
+
+                document.getElementById(
+                    "quantity"
+                ).value = 0;
+
+
+                showNotification(
+                    "Item added successfully."
+                );
+
+
+                loadItems();
+
+
+            } catch (error) {
+
+                showNotification(
+                    "Unable to add item.",
+                    true
+                );
+
+                console.error(error);
+
+            }
+
+        }
+    );
+
+
+    // =========================
+    // EDIT MODAL
+    // =========================
+
+    function openEditModal(
+        id,
+        name,
+        description,
+        quantity
+    ) {
+
+        document.getElementById(
+            "editId"
+        ).value = id;
+
+        document.getElementById(
+            "editName"
+        ).value = name;
+
+        document.getElementById(
+            "editDescription"
+        ).value = description;
+
+        document.getElementById(
+            "editQuantity"
+        ).value = quantity;
+
+
+        document.getElementById(
+            "editModal"
+        ).classList.add("active");
+
+    }
+
+
+    function closeEditModal() {
+
+        document.getElementById(
+            "editModal"
+        ).classList.remove("active");
+
+    }
+
+
+    // =========================
+    // UPDATE
+    // =========================
+
+    async function updateItem() {
+
+        const id =
+            document.getElementById(
+                "editId"
+            ).value;
+
+        const name =
+            document.getElementById(
+                "editName"
+            ).value;
+
+        const description =
+            document.getElementById(
+                "editDescription"
+            ).value;
+
+        const quantity =
+            document.getElementById(
+                "editQuantity"
+            ).value;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/items/${id}`,
+                    {
+
+                        method: "PUT",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            name,
+
+                            description,
+
+                            quantity:
+                                Number(quantity)
+
+                        })
+
+                    }
+                );
+
+
+            if (!response.ok) {
+                throw new Error(
+                    "Failed to update item"
+                );
+            }
+
+
+            closeEditModal();
+
+            showNotification(
+                "Item updated successfully."
+            );
+
+            loadItems();
+
+
+        } catch (error) {
+
+            showNotification(
+                "Unable to update item.",
+                true
+            );
+
+            console.error(error);
+
+        }
+
+    }
+
+
+    // =========================
+    // DELETE
+    // =========================
+
+    function openDeleteModal(id) {
+
+        deleteId = id;
+
+        document.getElementById(
+            "deleteModal"
+        ).classList.add("active");
+
+    }
+
+
+    function closeDeleteModal() {
+
+        deleteId = null;
+
+        document.getElementById(
+            "deleteModal"
+        ).classList.remove("active");
+
+    }
+
+
+    async function confirmDelete() {
+
+        if (!deleteId) {
+            return;
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/items/${deleteId}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+
+            if (!response.ok) {
+                throw new Error(
+                    "Failed to delete item"
+                );
+            }
+
+
+            closeDeleteModal();
+
+            showNotification(
+                "Item deleted successfully."
+            );
+
+            loadItems();
+
+
+        } catch (error) {
+
+            showNotification(
+                "Unable to delete item.",
+                true
+            );
+
+            console.error(error);
+
+        }
+
+    }
+
+
+    // =========================
+    // HELPERS
+    // =========================
+
+    function escapeQuotes(value) {
+
+        return value
+            .replace(/\\/g, "\\\\")
+            .replace(/'/g, "\\'");
+
+    }
+
+
+    function escapeHTML(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function showNotification(
+        message,
+        error = false
+    ) {
+
+        const notification =
+            document.getElementById(
+                "notification"
+            );
+
+        notification.textContent = message;
+
+        notification.style.borderLeftColor =
+            error ? "#dc2626" : "#2563eb";
+
+        notification.classList.add("show");
+
+
+        setTimeout(() => {
+
+            notification.classList.remove(
+                "show"
+            );
+
+        }, 3000);
+
+    }
+
+
+    // Close modal when clicking outside
+
+    window.addEventListener(
+        "click",
+        (event) => {
+
+            const editModal =
+                document.getElementById(
+                    "editModal"
+                );
+
+            const deleteModal =
+                document.getElementById(
+                    "deleteModal"
+                );
+
+
+            if (event.target === editModal) {
+                closeEditModal();
+            }
+
+            if (event.target === deleteModal) {
+                closeDeleteModal();
+            }
+
+        }
+    );
+
+
+    // Initial load
+
+    loadItems();
+
+</script>
+```
+
+</body>
+
+</html>
